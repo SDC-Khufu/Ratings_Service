@@ -6,22 +6,13 @@ const Transform = require('stream').Transform;
 const csvStringifier = createCsvStringifier({
   header: [
     { id: 'id', title: 'id' },
-    { id: 'product_id', title: 'product_id' },
-    { id: 'rating', title: 'rating' },
-    { id: 'date', title: 'date' },
-    { id: 'summary', title: 'summary' },
-    { id: 'body', title: 'body' },
-    { id: 'recommend', title: 'recommend' },
-    { id: 'reported', title: 'reported' },
-    { id: 'reviewer_name', title: 'reviewer_name' },
-    { id: 'reviewer_email', title: 'reviewer_email' },
-    { id: 'response', title: 'response' },
-    { id: 'helpfulness', title: 'helpfulness' },
+    { id: 'review_id', title: 'review_id' },
+    { id: 'url', title: 'url' },
   ],
 });
 
-let rS = fs.createReadStream('./data/dummy.csv');
-let wS = fs.createWriteStream('./data/cleandummy.csv');
+let rS = fs.createReadStream('../data/Raw_Data/reviews.csv');
+let wS = fs.createWriteStream('../data/Cleaned_Data/cleanedReviews.csv');
 
 class CSVCleaner extends Transform {
   constructor(options) {
@@ -29,10 +20,7 @@ class CSVCleaner extends Transform {
   }
 
   _transform(chunk, encoding, next) {
-    console.log('CHUNK LOG:', chunk);
-    for (let key in chunk) {
-      console.log('KEY IN LOG:', key);
-    }
+    console.log(chunk);
     chunk = csvStringifier.stringifyRecords([chunk]);
     this.push(chunk);
     next();

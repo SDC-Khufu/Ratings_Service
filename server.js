@@ -13,14 +13,17 @@ app.use(morgan('dev'));
 client.connect();
 
 app.get('/', (req, res) => {
-  client.query('SELECT * FROM team;', (err, dbResponse) => {
-    if (err) {
-      res.status(400);
-      res.send('Database is not connected successfully!');
+  client.query(
+    'SELECT * FROM public.reviews ORDER BY id ASC LIMIT 10;',
+    (err, dbResponse) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send('Database is not connected successfully!');
+      }
+      res.send(dbResponse.rows);
     }
-    res.send(dbResponse);
-    client.end();
-  });
+  );
 });
 
 app.get('/reviews/:product_id/list');
